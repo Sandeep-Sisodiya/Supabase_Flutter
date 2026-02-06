@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_practice/Screens/Auth/register_screen.dart';
 
 import '../Home/home_screen.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
   bool loading = false;
   final supabase = Supabase.instance.client;
 
-  login() async {
+  register() async {
     setState(() {
       loading = true;
     });
     try {
-      final result = await supabase.auth.signInWithPassword(
+      final result = await supabase.auth.signUp(
         email: email.text,
         password: password.text,
       );
@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
-          (context) => false,
+              (context) => false,
         );
       }
     } catch (e) {
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: Text('Register')),
       body: ListView(
         padding: EdgeInsets.all(15),
         children: [
@@ -62,17 +62,17 @@ class _LoginScreenState extends State<LoginScreen> {
           loading
               ? CircularProgressIndicator():
           ElevatedButton(onPressed: () {
-            login();
-          }, child: Text('Login')),
+            register();
+          }, child: Text('Register')),
           SizedBox(height: 20),
           TextButton(
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RegisterScreen()),
+                MaterialPageRoute(builder: (context) => LoginScreen()),
               );
             },
-            child: Text('Don\'t have an account? Register'),
+            child: Text('Already have an account? Login'),
           ),
         ],
       ),
